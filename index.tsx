@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import { Navbar, Row, Container, Col } from "react-bootstrap";
 import { render } from "react-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import "./style.css";
 import { Household } from "./Household";
 import { Child } from "./Child";
 import { HouseholdInput } from "./HouseholdInput";
 import { Calculator } from "./Calculator";
 import { MonetaryAmount } from "./MonetaryAmount";
+import * as d3 from "d3-format";
 
 interface AppProps {}
 interface AppState {
@@ -22,7 +24,7 @@ class App extends Component<AppProps, AppState> {
   constructor(props) {
     super(props);
     var household = new Household();
-    household.children.push(new Child(2022));
+    household.children.push(new Child(2020));
     this.state = {
       household: household,
       financials: { childCost: this.calculator.childCost(household) }
@@ -31,14 +33,16 @@ class App extends Component<AppProps, AppState> {
 
   renderOutput() {
     var firstYearCost = this.state.financials.childCost[0];
-
+    console.log("First year cost: " + firstYearCost.amount);
     return (
       <div className="text-center align-middle">
         {firstYearCost && firstYearCost.amount > 0
-          ? "Child cost in " +
+          ? "Monthly child cost in " +
             this.calculator.startYear +
             ": " +
-            firstYearCost.amount
+            firstYearCost.currency +
+            " " +
+            d3.format(",")(Math.round(firstYearCost.amount / 100) * 100)
           : "No child cost in first year."}
       </div>
     );
@@ -54,7 +58,7 @@ class App extends Component<AppProps, AppState> {
           childCost: this.calculator.childCost(this.state.household)
         }
       });
-    }, 500);
+    }, 300);
   }
 
   render() {
