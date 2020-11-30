@@ -24,6 +24,7 @@ import {
 } from "./ChildStrategyEnums";
 import { MonetaryAmount } from "./MonetaryAmount";
 import RangeSlider from "react-bootstrap-range-slider";
+import { Calculator } from "./Calculator";
 
 export class ChildCostInput extends Component<
   { children: Child[]; childStrategy: ChildStrategy; onChange },
@@ -96,6 +97,11 @@ export class ChildCostInput extends Component<
   }
 
   renderChildStartegyInput(eventKey: string) {
+    var eldestChildYoB = Math.max(
+      ...this.state.children.map(child => child.yearOfBirth)
+    );
+    var nextYear = new Date().getFullYear() + 1;
+
     return (
       <Card>
         <Accordion.Toggle as={Card.Header} eventKey={eventKey}>
@@ -104,22 +110,31 @@ export class ChildCostInput extends Component<
         <Accordion.Collapse eventKey={eventKey}>
           <Card.Body>
             <Form>
-              <ChildCareStrategyInput
-                strategy={this.state.childStrategy}
-                onChange={this.props.onChange}
-              />
-              <K12StrategyInput
-                strategy={this.state.childStrategy}
-                onChange={this.props.onChange}
-              />
-              <AfterSchoolCareInput
-                strategy={this.state.childStrategy}
-                onChange={this.props.onChange}
-              />
-              <ChildSupplyInput
-                strategy={this.state.childStrategy}
-                onChange={this.props.onChange}
-              />
+              {eldestChildYoB + Calculator.MAX_CHILD_CARE_AGE >= nextYear && (
+                <ChildCareStrategyInput
+                  strategy={this.state.childStrategy}
+                  onChange={this.props.onChange}
+                />
+              )}
+              {eldestChildYoB + Calculator.MAX_K12_AGE >= nextYear && (
+                <React.Fragment>
+                  <K12StrategyInput
+                    strategy={this.state.childStrategy}
+                    onChange={this.props.onChange}
+                  />
+                  <AfterSchoolCareInput
+                    strategy={this.state.childStrategy}
+                    onChange={this.props.onChange}
+                  />
+                </React.Fragment>
+              )}
+              {eldestChildYoB + Calculator.MAX_CHILD_SUPPORT_AGE >=
+                nextYear && (
+                <ChildSupplyInput
+                  strategy={this.state.childStrategy}
+                  onChange={this.props.onChange}
+                />
+              )}
             </Form>
           </Card.Body>
         </Accordion.Collapse>
@@ -315,22 +330,22 @@ export class AfterSchoolCareInput extends Component<
             <ToggleButton
               variant="outline-secondary"
               size="sm"
-              value={true}
-              style={{
-                width: "50%"
-              }}
-            >
-              Yes
-            </ToggleButton>
-            <ToggleButton
-              variant="outline-secondary"
-              size="sm"
               value={false}
               style={{
                 width: "50%"
               }}
             >
               No
+            </ToggleButton>
+            <ToggleButton
+              variant="outline-secondary"
+              size="sm"
+              value={true}
+              style={{
+                width: "50%"
+              }}
+            >
+              Yes
             </ToggleButton>
           </ToggleButtonGroup>
         </Form.Row>
