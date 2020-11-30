@@ -33,18 +33,22 @@ class App extends Component<AppProps, AppState> {
 
   renderOutput() {
     var firstYearCost = this.state.financials.childCost[0];
-    console.log("First year cost: " + firstYearCost.amount);
-    return (
-      <div className="text-center align-middle">
-        {firstYearCost && firstYearCost.amount > 0
-          ? "Monthly child cost in " +
-            this.calculator.startYear +
-            ": " +
-            firstYearCost.currency +
+
+    var textForFirstYear =
+      "Monthly child cost in " + this.calculator.startYear + ": ";
+    var textForNoCostFirstYear = "No child cost in first year.";
+
+    return firstYearCost && firstYearCost.amount > 0 ? (
+      <div className="text-center">
+        {textForFirstYear}
+        <span className="text-primary mx-2" style={{ fontSize: "x-large" }}>
+          {firstYearCost.currency +
             " " +
-            d3.format(",")(Math.round(firstYearCost.amount / 100) * 100)
-          : "No child cost in first year."}
+            d3.format(",")(Math.round(firstYearCost.amount / 100) * 100)}
+        </span>
       </div>
+    ) : (
+      <div className="text-center">{textForNoCostFirstYear}</div>
     );
   }
 
@@ -75,7 +79,9 @@ class App extends Component<AppProps, AppState> {
                 onChange={this.onChange.bind(this)}
               />
             </Col>
-            <Col xs={6}>{this.renderOutput()}</Col>
+            <Col xs={6} className="pt-5">
+              {this.renderOutput()}
+            </Col>
           </Row>
         </Container>
       </React.Fragment>
