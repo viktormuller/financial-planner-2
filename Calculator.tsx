@@ -8,16 +8,14 @@ import { MonetaryAmount } from "./MonetaryAmount";
 
 export class Calculator {
   startYear: number = new Date().getFullYear() + 1;
-  static ANNUAL_CHILD_SUPPLY = new MonetaryAmount(12000 / 12);
+  static ANNUAL_CHILD_SUPPLY = new MonetaryAmount(12000);
   static MAX_CHILD_SUPPORT_AGE = 22;
   static MAX_CHILD_CARE_AGE = 5;
   static MIN_K12_AGE: number = 6;
   static MAX_K12_AGE: number = 18;
   childCost(household: Household) {
     console.log("childCost calculation invoked");
-    console.log(
-      "Child care strategy: " + household.childStrategy.childCareStrategy
-    );
+
     var childCost: MonetaryAmount[] = [];
     var maxYear = Math.max(
       ...household.children.map(child => child.yearOfBirth)
@@ -37,7 +35,7 @@ export class Calculator {
             child.yearOfBirth + Calculator.MAX_CHILD_SUPPORT_AGE >= year
           ) {
             childCost[index] = childCost[index].add(
-              household.childStrategy.monthlySupply
+              household.childStrategy.annualSupply
             );
           }
 

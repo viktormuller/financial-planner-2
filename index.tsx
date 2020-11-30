@@ -44,7 +44,7 @@ class App extends Component<AppProps, AppState> {
         <span className="text-primary mx-2" style={{ fontSize: "x-large" }}>
           {firstYearCost.currency +
             " " +
-            d3.format(",")(Math.round(firstYearCost.amount / 100) * 100)}
+            d3.format(",")(Math.round(firstYearCost.amount / 12 / 100) * 100)}
         </span>
       </div>
     ) : (

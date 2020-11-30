@@ -52,7 +52,7 @@ export class ChildCostInput extends Component<
     this.props.onChange();
     CHILD_CARE_TEXT;
   }
-
+  annualSupplyannualSupplyannualSupply;
   removeChild(index: number) {
     console.log("Before");
     console.log(this.state.children);
@@ -364,7 +364,9 @@ export class ChildSupplyInput extends Component<
   }
 
   onChange(event) {
-    this.state.monthlySupply = new MonetaryAmount(Number(event.target.value));
+    this.state.annualSupply = new MonetaryAmount(
+      Number(event.target.value) * 12
+    );
     this.props.onChange();
   }
   render() {
@@ -381,11 +383,11 @@ export class ChildSupplyInput extends Component<
             min={MONTHLY_CHILD_SUPPLY_MIN.amount}
             max={MONTHLY_CHILD_SUPPLY_MAX.amount}
             step={100}
-            value={this.state.monthlySupply.amount}
+            value={this.state.annualSupply.amount / 12}
             onChange={this.onChange.bind(this)}
             tooltip="on"
             tooltipLabel={value =>
-              this.state.monthlySupply.currency + " " + d3.format(",")(value)
+              this.state.annualSupply.currency + " " + d3.format(",")(value)
             }
           />
         </div>

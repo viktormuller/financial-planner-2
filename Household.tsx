@@ -12,6 +12,6 @@ export class Household {
     childCareStrategy: ChildCareStrategy.DAYCARE,
     k12Strategy: K12Strategy.PRIVATE_REGULAR,
     afterSchoolCare: false,
-    monthlySupply: new MonetaryAmount(1500)
+    annualSupply: new MonetaryAmount(18000)
   };
 }

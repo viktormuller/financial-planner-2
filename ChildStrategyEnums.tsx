@@ -4,7 +4,7 @@ export class ChildStrategy {
   childCareStrategy: ChildCareStrategy;
   k12Strategy: K12Strategy;
   afterSchoolCare: boolean;
-  monthlySupply: MonetaryAmount;
+  annualSupply: MonetaryAmount;
 }
 
 export enum ChildCareStrategy {
@@ -27,11 +27,11 @@ export const CHILD_CARE_TEXT = [
 
 export const CHILD_CARE_COST = [
   new MonetaryAmount(0),
-  new MonetaryAmount(7000 / 12),
-  new MonetaryAmount(10000 / 12),
-  new MonetaryAmount(14000 / 12),
-  new MonetaryAmount(25000 / 12),
-  new MonetaryAmount(40000 / 12)
+  new MonetaryAmount(7000),
+  new MonetaryAmount(10000),
+  new MonetaryAmount(14000),
+  new MonetaryAmount(25000),
+  new MonetaryAmount(40000)
 ];
 
 export enum K12Strategy {
@@ -44,11 +44,11 @@ export const K12_TEXT = ["Public", "Typical private", "High-end private"];
 
 export const K12_COST = [
   new MonetaryAmount(0),
-  new MonetaryAmount(12000 / 12),
-  new MonetaryAmount(30000 / 12)
+  new MonetaryAmount(12000),
+  new MonetaryAmount(30000)
 ];
 
-export const AFTER_SCHOOL_CARE_COST = new MonetaryAmount(10000 / 12);
+export const AFTER_SCHOOL_CARE_COST = new MonetaryAmount(10000);
 
 export const MONTHLY_CHILD_SUPPLY_MIN = new MonetaryAmount(12000 / 12);
 export const MONTHLY_CHILD_SUPPLY_MAX = new MonetaryAmount(24000 / 12);
