@@ -10,6 +10,7 @@ import { HouseholdInput } from "./HouseholdInput";
 import { Calculator } from "./Calculator";
 import { MonetaryAmount } from "./MonetaryAmount";
 import * as d3 from "d3-format";
+import { ChildCostGraph } from "./ChildCostGraph";
 
 interface AppProps {}
 interface AppState {
@@ -38,17 +39,27 @@ class App extends Component<AppProps, AppState> {
       "Monthly child cost in " + this.calculator.startYear + ": ";
     var textForNoCostFirstYear = "No child cost in first year.";
 
-    return firstYearCost && firstYearCost.amount > 0 ? (
-      <div className="text-center">
-        {textForFirstYear}
-        <span className="text-primary mx-2" style={{ fontSize: "x-large" }}>
-          {firstYearCost.currency +
-            " " +
-            d3.format(",")(Math.round(firstYearCost.amount / 12 / 100) * 100)}
-        </span>
-      </div>
-    ) : (
-      <div className="text-center">{textForNoCostFirstYear}</div>
+    return (
+      <React.Fragment>
+        {firstYearCost && firstYearCost.amount > 0 ? (
+          <div className="text-center">
+            {textForFirstYear}
+            <span className="text-primary mx-2" style={{ fontSize: "x-large" }}>
+              {firstYearCost.currency +
+                " " +
+                d3.format(",")(
+                  Math.round(firstYearCost.amount / 12 / 100) * 100
+                )}
+            </span>
+          </div>
+        ) : (
+          <div className="text-center">{textForNoCostFirstYear}</div>
+        )}
+        <ChildCostGraph
+          data={this.state.financials.childCost}
+          startYear={this.calculator.startYear}
+        />
+      </React.Fragment>
     );
   }
 
