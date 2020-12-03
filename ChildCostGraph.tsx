@@ -37,7 +37,7 @@ export class ChildCostGraph extends Component<
 
     return this.state.show ? (
       <React.Fragment>
-        <div className="mb-n1">
+        <div className="mb-n1 flex-shrink-0">
           <input type="text" style={{ display: "none" }} autoFocus />
           <Button
             className="close"
@@ -48,25 +48,27 @@ export class ChildCostGraph extends Component<
             <span aria-hidden="true">&times;</span>
           </Button>
         </div>
-        <ResponsiveContainer aspect={1.5} className="mt-5">
-          <BarChart data={monthlyData}>
-            <XAxis dataKey="year" />
-            <YAxis />
-            <Tooltip
-              formatter={value => [
-                d3.format(",.0f")(Number(value)),
-                "Monthly cost: "
-              ]}
-            />
-            <Legend />
-            <Bar
-              dataKey="amount"
-              name="Monthly cost"
-              fill="#6c757d"
-              unit={this.props.data[0].currency}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        <div className="my-5 flex-shrink-1 h-100" style={{ minHeight: "0px" }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={monthlyData}>
+              <XAxis dataKey="year" />
+              <YAxis />
+              <Tooltip
+                formatter={value => [
+                  d3.format(",.0f")(Number(value)),
+                  "Monthly cost: "
+                ]}
+              />
+              <Legend />
+              <Bar
+                dataKey="amount"
+                name="Monthly cost"
+                fill="#6c757d"
+                unit={this.props.data[0].currency}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </React.Fragment>
     ) : (
       <div className="my-5 text-center">

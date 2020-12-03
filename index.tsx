@@ -42,7 +42,7 @@ class App extends Component<AppProps, AppState> {
     return (
       <React.Fragment>
         {firstYearCost && firstYearCost.amount > 0 ? (
-          <div className="text-center">
+          <div className="text-center flex-shrink-0">
             {textForFirstYear}
             <span className="text-primary mx-2" style={{ fontSize: "x-large" }}>
               {firstYearCost.currency +
@@ -53,7 +53,9 @@ class App extends Component<AppProps, AppState> {
             </span>
           </div>
         ) : (
-          <div className="text-center">{textForNoCostFirstYear}</div>
+          <div className="text-center flex-shrink-0">
+            {textForNoCostFirstYear}
+          </div>
         )}
         <ChildCostGraph
           data={this.state.financials.childCost}
@@ -82,15 +84,21 @@ class App extends Component<AppProps, AppState> {
         <Navbar bg="dark" variant="dark">
           <Navbar.Brand>How much does it cost to raise a child?</Navbar.Brand>
         </Navbar>
-        <Container className="mt-2">
-          <Row>
-            <Col xs={6}>
+        <Container
+          className="my-2"
+          style={{
+            height: "calc(100% - 72px)",
+            maxHeight: "calc(100% - 72px)"
+          }}
+        >
+          <Row className="h-100">
+            <Col xs={6} className="h-100">
               <HouseholdInput
                 household={this.state.household}
                 onChange={this.onChange.bind(this)}
               />
             </Col>
-            <Col xs={6} className="pt-5">
+            <Col xs={6} className="pt-5 d-flex flex-column h-100">
               {this.renderOutput()}
             </Col>
           </Row>

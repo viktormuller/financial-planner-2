@@ -17,14 +17,19 @@ import {
   ChildCareStrategy,
   ChildStrategy,
   CHILD_CARE_TEXT,
+  CollegeStrategy,
+  COLLEGE_TEXT,
   K12Strategy,
   K12_TEXT,
+  MAX_CHILD_CARE_AGE,
+  MAX_CHILD_SUPPORT_AGE,
+  MAX_COLLEGE_AGE,
+  MAX_K12_AGE,
   MONTHLY_CHILD_SUPPLY_MAX,
   MONTHLY_CHILD_SUPPLY_MIN
 } from "./ChildStrategyEnums";
 import { MonetaryAmount } from "./MonetaryAmount";
 import RangeSlider from "react-bootstrap-range-slider";
-import { Calculator } from "./Calculator";
 
 export class ChildCostInput extends Component<
   { children: Child[]; childStrategy: ChildStrategy; onChange },
@@ -66,7 +71,7 @@ export class ChildCostInput extends Component<
 
   renderYearsOfBirthInput(eventKey: string) {
     return (
-      <Card>
+      <Card className="flex-shrink-0">
         <Accordion.Toggle as={Card.Header} eventKey={eventKey}>
           How many children do you plan to have?
         </Accordion.Toggle>
@@ -103,20 +108,28 @@ export class ChildCostInput extends Component<
     var nextYear = new Date().getFullYear() + 1;
 
     return (
-      <Card>
-        <Accordion.Toggle as={Card.Header} eventKey={eventKey}>
+      <Card className="flex-shrink-1">
+        <Accordion.Toggle
+          as={Card.Header}
+          eventKey={eventKey}
+          className="flex-shrink-0"
+        >
           How would you like to raise them?
         </Accordion.Toggle>
-        <Accordion.Collapse eventKey={eventKey}>
-          <Card.Body>
+        <Accordion.Collapse
+          eventKey={eventKey}
+          className="flex-shrink-1"
+          style={{ minHeight: "0px" }}
+        >
+          <Card.Body className="h-100" style={{ overflowY: "auto" }}>
             <Form>
-              {eldestChildYoB + Calculator.MAX_CHILD_CARE_AGE >= nextYear && (
+              {eldestChildYoB + MAX_CHILD_CARE_AGE >= nextYear && (
                 <ChildCareStrategyInput
                   strategy={this.state.childStrategy}
                   onChange={this.props.onChange}
                 />
               )}
-              {eldestChildYoB + Calculator.MAX_K12_AGE >= nextYear && (
+              {eldestChildYoB + MAX_K12_AGE >= nextYear && (
                 <React.Fragment>
                   <K12StrategyInput
                     strategy={this.state.childStrategy}
@@ -128,8 +141,13 @@ export class ChildCostInput extends Component<
                   />
                 </React.Fragment>
               )}
-              {eldestChildYoB + Calculator.MAX_CHILD_SUPPORT_AGE >=
-                nextYear && (
+              {eldestChildYoB + MAX_COLLEGE_AGE >= nextYear && (
+                <CollegeStrategyInput
+                  strategy={this.state.childStrategy}
+                  onChange={this.props.onChange}
+                />
+              )}
+              {eldestChildYoB + MAX_CHILD_SUPPORT_AGE >= nextYear && (
                 <ChildSupplyInput
                   strategy={this.state.childStrategy}
                   onChange={this.props.onChange}
@@ -144,7 +162,10 @@ export class ChildCostInput extends Component<
 
   render() {
     return (
-      <Accordion defaultActiveKey="yearsOfBirth">
+      <Accordion
+        defaultActiveKey="yearsOfBirth"
+        className="h-100 d-flex flex-column"
+      >
         {this.renderYearsOfBirthInput("yearsOfBirth")}
         {this.renderChildStartegyInput("childStrategy")}
       </Accordion>
@@ -182,6 +203,8 @@ export class ChildInput extends Component<ChildProps, { child: Child }> {
               Child {this.props.index + 1} year of birth
               <Button
                 variant="light"
+                className="py-0 mt-n2"
+                style={{ backgroundColor: "white", borderColor: "white" }}
                 onClick={() => this.props.removeChild(this.props.index)}
               >
                 <BsTrash />
@@ -221,30 +244,33 @@ export class ChildCareStrategyInput extends Component<
       <FormGroup>
         {" "}
         <Form.Label>Child care (0-5 years)</Form.Label>
-        <ToggleButtonGroup
-          name="child_care"
-          type="radio"
-          value={this.state.childCareStrategy}
-          onChange={this.onChange.bind(this)}
-        >
-          {Object.keys(ChildCareStrategy).map(strat => {
-            if (!isNaN(Number(strat)))
-              return (
-                <ToggleButton
-                  variant="outline-secondary"
-                  size="sm"
-                  value={Number(strat)}
-                  key={strat}
-                  style={{
-                    width:
-                      (100 / Object.keys(ChildCareStrategy).length) * 2 + "%"
-                  }}
-                >
-                  {CHILD_CARE_TEXT[strat]}{" "}
-                </ToggleButton>
-              );
-          })}
-        </ToggleButtonGroup>
+        <Form.Row className="mx-0">
+          <ToggleButtonGroup
+            className="w-100"
+            name="child_care"
+            type="radio"
+            value={this.state.childCareStrategy}
+            onChange={this.onChange.bind(this)}
+          >
+            {Object.keys(ChildCareStrategy).map(strat => {
+              if (!isNaN(Number(strat)))
+                return (
+                  <ToggleButton
+                    variant="outline-secondary"
+                    size="sm"
+                    value={Number(strat)}
+                    key={strat}
+                    style={{
+                      width:
+                        (100 / Object.keys(ChildCareStrategy).length) * 2 + "%"
+                    }}
+                  >
+                    {CHILD_CARE_TEXT[strat]}{" "}
+                  </ToggleButton>
+                );
+            })}
+          </ToggleButtonGroup>
+        </Form.Row>
       </FormGroup>
     );
   }
@@ -391,6 +417,57 @@ export class ChildSupplyInput extends Component<
             }
           />
         </div>
+      </FormGroup>
+    );
+  }
+}
+
+export class CollegeStrategyInput extends Component<
+  { strategy: ChildStrategy; onChange },
+  ChildStrategy
+> {
+  constructor(props) {
+    super(props);
+    this.state = props.strategy;
+  }
+
+  onChange(value) {
+    this.state.collegeStrategy = value;
+    this.props.onChange();
+  }
+
+  render() {
+    return (
+      <FormGroup>
+        {" "}
+        <Form.Label>College education (19-22 years)</Form.Label>
+        <Form.Row className="mx-0">
+          <ToggleButtonGroup
+            style={{ width: "100%" }}
+            name="college"
+            type="radio"
+            value={this.state.collegeStrategy}
+            onChange={this.onChange.bind(this)}
+          >
+            {Object.keys(CollegeStrategy).map(strat => {
+              if (!isNaN(Number(strat)))
+                return (
+                  <ToggleButton
+                    variant="outline-secondary"
+                    size="sm"
+                    value={Number(strat)}
+                    key={strat}
+                    style={{
+                      width:
+                        (100 / Object.keys(CollegeStrategy).length) * 2 + "%"
+                    }}
+                  >
+                    {COLLEGE_TEXT[strat]}{" "}
+                  </ToggleButton>
+                );
+            })}
+          </ToggleButtonGroup>
+        </Form.Row>
       </FormGroup>
     );
   }
