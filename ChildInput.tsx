@@ -71,7 +71,7 @@ export class ChildCostInput extends Component<
 
   renderYearsOfBirthInput(eventKey: string) {
     return (
-      <Card>
+      <Card className="flex-shrink-0">
         <Accordion.Toggle as={Card.Header} eventKey={eventKey}>
           How many children do you plan to have?
         </Accordion.Toggle>
@@ -108,12 +108,20 @@ export class ChildCostInput extends Component<
     var nextYear = new Date().getFullYear() + 1;
 
     return (
-      <Card>
-        <Accordion.Toggle as={Card.Header} eventKey={eventKey}>
+      <Card className="flex-shrink-1">
+        <Accordion.Toggle
+          as={Card.Header}
+          eventKey={eventKey}
+          className="flex-shrink-0"
+        >
           How would you like to raise them?
         </Accordion.Toggle>
-        <Accordion.Collapse eventKey={eventKey}>
-          <Card.Body>
+        <Accordion.Collapse
+          eventKey={eventKey}
+          className="flex-shrink-1"
+          style={{ minHeight: "0px" }}
+        >
+          <Card.Body className="h-100" style={{ overflowY: "auto" }}>
             <Form>
               {eldestChildYoB + MAX_CHILD_CARE_AGE >= nextYear && (
                 <ChildCareStrategyInput
@@ -154,7 +162,10 @@ export class ChildCostInput extends Component<
 
   render() {
     return (
-      <Accordion defaultActiveKey="yearsOfBirth">
+      <Accordion
+        defaultActiveKey="yearsOfBirth"
+        className="h-100 d-flex flex-column"
+      >
         {this.renderYearsOfBirthInput("yearsOfBirth")}
         {this.renderChildStartegyInput("childStrategy")}
       </Accordion>
@@ -233,30 +244,33 @@ export class ChildCareStrategyInput extends Component<
       <FormGroup>
         {" "}
         <Form.Label>Child care (0-5 years)</Form.Label>
-        <ToggleButtonGroup
-          name="child_care"
-          type="radio"
-          value={this.state.childCareStrategy}
-          onChange={this.onChange.bind(this)}
-        >
-          {Object.keys(ChildCareStrategy).map(strat => {
-            if (!isNaN(Number(strat)))
-              return (
-                <ToggleButton
-                  variant="outline-secondary"
-                  size="sm"
-                  value={Number(strat)}
-                  key={strat}
-                  style={{
-                    width:
-                      (100 / Object.keys(ChildCareStrategy).length) * 2 + "%"
-                  }}
-                >
-                  {CHILD_CARE_TEXT[strat]}{" "}
-                </ToggleButton>
-              );
-          })}
-        </ToggleButtonGroup>
+        <Form.Row className="mx-0">
+          <ToggleButtonGroup
+            className="w-100"
+            name="child_care"
+            type="radio"
+            value={this.state.childCareStrategy}
+            onChange={this.onChange.bind(this)}
+          >
+            {Object.keys(ChildCareStrategy).map(strat => {
+              if (!isNaN(Number(strat)))
+                return (
+                  <ToggleButton
+                    variant="outline-secondary"
+                    size="sm"
+                    value={Number(strat)}
+                    key={strat}
+                    style={{
+                      width:
+                        (100 / Object.keys(ChildCareStrategy).length) * 2 + "%"
+                    }}
+                  >
+                    {CHILD_CARE_TEXT[strat]}{" "}
+                  </ToggleButton>
+                );
+            })}
+          </ToggleButtonGroup>
+        </Form.Row>
       </FormGroup>
     );
   }
