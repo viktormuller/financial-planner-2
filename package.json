@@ -20,6 +20,7 @@
     "react-bootstrap-range-slider": "2.0.2",
     "react-dom": "17.0.1",
     "react-icons": "4.1.0",
+    "react-number-format": "^4.4.1",
     "recharts": "1.8.5",
     "uuid": "8.3.1"
   },
