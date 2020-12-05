@@ -36,7 +36,7 @@ class App extends Component<AppProps, AppState> {
     var firstYearCost = this.state.financials.childCost[0];
 
     var textForFirstYear =
-      "Monthly child cost in " + this.calculator.startYear + ": ";
+      "Monthly child cost in " + this.calculator.startYear + " is";
     var textForNoCostFirstYear = "No child cost in first year.";
 
     return (
