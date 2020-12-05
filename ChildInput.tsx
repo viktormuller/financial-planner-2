@@ -195,9 +195,7 @@ export class ChildInput extends Component<ChildProps, { child: Child }> {
     return (
       <FormGroup>
         <Row>
-          {" "}
           <Col xs={9}>
-            {" "}
             <Form.Label>
               Child {this.props.index + 1} year of birth
               <Button
@@ -219,7 +217,7 @@ export class ChildInput extends Component<ChildProps, { child: Child }> {
               onChange={this.onYearOfBirthChange.bind(this)}
             />
           </Col>
-        </Row>{" "}
+        </Row>
       </FormGroup>
     );
   }
@@ -241,7 +239,6 @@ export class ChildCareStrategyInput extends Component<
   render() {
     return (
       <FormGroup>
-        {" "}
         <Form.Label>Child care (0-5 years)</Form.Label>
         <Form.Row className="mx-0">
           <ToggleButtonGroup
@@ -264,7 +261,7 @@ export class ChildCareStrategyInput extends Component<
                         (100 / Object.keys(ChildCareStrategy).length) * 2 + "%"
                     }}
                   >
-                    {CHILD_CARE_TEXT[strat]}{" "}
+                    {CHILD_CARE_TEXT[strat]}
                   </ToggleButton>
                 );
             })}
@@ -292,7 +289,6 @@ export class K12StrategyInput extends Component<
   render() {
     return (
       <FormGroup>
-        {" "}
         <Form.Label>K-12 education (6-18 years)</Form.Label>
         <Form.Row className="mx-0">
           <ToggleButtonGroup
@@ -314,7 +310,7 @@ export class K12StrategyInput extends Component<
                       width: (100 / Object.keys(K12Strategy).length) * 2 + "%"
                     }}
                   >
-                    {K12_TEXT[strat]}{" "}
+                    {K12_TEXT[strat]}
                   </ToggleButton>
                 );
             })}
@@ -342,7 +338,6 @@ export class AfterSchoolCareInput extends Component<
   render() {
     return (
       <FormGroup>
-        {" "}
         <Form.Label>After school care (6-18 years)</Form.Label>
         <Form.Row className="mx-0">
           <ToggleButtonGroup
@@ -397,7 +392,6 @@ export class ChildSupplyInput extends Component<
   render() {
     return (
       <FormGroup>
-        {" "}
         <Form.Label>
           Monthly supplies (e.g. food, housing, transport, clothing, healthcare,
           extra-curriculars, summer camp, etc.)
@@ -444,7 +438,6 @@ export class CollegeStrategyInput extends Component<
     return (
       <React.Fragment>
         <FormGroup>
-          {" "}
           <Form.Label>College education (19-22 years)</Form.Label>
           <Form.Row className="mx-0">
             <ToggleButtonGroup
@@ -467,7 +460,7 @@ export class CollegeStrategyInput extends Component<
                           (100 / Object.keys(CollegeStrategy).length) * 2 + "%"
                       }}
                     >
-                      {COLLEGE_TEXT[strat]}{" "}
+                      {COLLEGE_TEXT[strat]}
                     </ToggleButton>
                   );
               })}
@@ -476,9 +469,7 @@ export class CollegeStrategyInput extends Component<
         </FormGroup>
         <FormGroup>
           <Form.Row>
-            {" "}
             <Col xs={9}>
-              {" "}
               <Form.Label>
                 Savings already available for college expenses:
               </Form.Label>
@@ -493,7 +484,7 @@ export class CollegeStrategyInput extends Component<
                 onValueChange={this.onCollegeSavingChange.bind(this)}
               />
             </Col>
-          </Form.Row>{" "}
+          </Form.Row>
         </FormGroup>
       </React.Fragment>
     );
