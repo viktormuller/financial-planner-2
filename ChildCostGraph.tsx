@@ -34,6 +34,18 @@ export class ChildCostGraph extends Component<
         year: this.props.startYear + index
       };
     });
+    var peak;
+    if (this.props.data.length != 0) {
+      peak = this.props.data
+        .map((annualCost, index) => {
+          return { year: this.props.startYear + index, cost: annualCost };
+        })
+        .reduce((accumulated, current) => {
+          return accumulated.cost.amount < current.cost.amount
+            ? current
+            : accumulated;
+        });
+    }
 
     return this.state.show ? (
       <React.Fragment>
@@ -71,7 +83,23 @@ export class ChildCostGraph extends Component<
         </div>
       </React.Fragment>
     ) : (
-      <div className="my-5 text-center">
+      <div className="text-center">
+        {" "}
+        {this.props.data.length != 0 && (
+          <div className="text-center mb-3">
+            {"Peak cost is"}
+            <span
+              className="text-secondary mx-2"
+              style={{ fontSize: "x-large" }}
+            >
+              {peak.cost.currency +
+                " " +
+                d3.format(",")(Math.round(peak.cost.amount / 12 / 100) * 100)}
+            </span>
+            {""}
+            {"in year " + peak.year}
+          </div>
+        )}
         <Button
           size="sm"
           variant="outline-secondary"
