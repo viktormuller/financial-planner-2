@@ -6,6 +6,7 @@ export class ChildStrategy {
   afterSchoolCare: boolean;
   annualSupply: MonetaryAmount;
   collegeStrategy: CollegeStrategy;
+  collegeSaving: MonetaryAmount;
 }
 
 export enum ChildCareStrategy {

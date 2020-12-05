@@ -30,6 +30,7 @@ import {
 } from "./ChildStrategyEnums";
 import { MonetaryAmount } from "./MonetaryAmount";
 import RangeSlider from "react-bootstrap-range-slider";
+import NumberFormat from "react-number-format";
 
 export class ChildCostInput extends Component<
   { children: Child[]; childStrategy: ChildStrategy; onChange },
@@ -49,15 +50,13 @@ export class ChildCostInput extends Component<
     );
     maxYear = maxYear ? maxYear : new Date().getFullYear();
     this.state.children.push(new Child(maxYear + 2));
-    console.log("Added new child " + (maxYear + 2));
-    console.log(this.state.children);
 
     this.setState({ children: this.state.children });
 
     this.props.onChange();
     CHILD_CARE_TEXT;
   }
-  annualSupplyannualSupplyannualSupply;
+
   removeChild(index: number) {
     console.log("Before");
     console.log(this.state.children);
@@ -197,7 +196,7 @@ export class ChildInput extends Component<ChildProps, { child: Child }> {
       <FormGroup>
         <Row>
           {" "}
-          <Col>
+          <Col xs={9}>
             {" "}
             <Form.Label>
               Child {this.props.index + 1} year of birth
@@ -211,7 +210,7 @@ export class ChildInput extends Component<ChildProps, { child: Child }> {
               </Button>
             </Form.Label>
           </Col>
-          <Col>
+          <Col xs={3}>
             <Form.Control
               className="text-right"
               name="endYear"
@@ -436,39 +435,67 @@ export class CollegeStrategyInput extends Component<
     this.props.onChange();
   }
 
+  onCollegeSavingChange(values) {
+    this.state.collegeSaving = new MonetaryAmount(values.floatValue);
+    this.props.onChange();
+  }
+
   render() {
     return (
-      <FormGroup>
-        {" "}
-        <Form.Label>College education (19-22 years)</Form.Label>
-        <Form.Row className="mx-0">
-          <ToggleButtonGroup
-            style={{ width: "100%" }}
-            name="college"
-            type="radio"
-            value={this.state.collegeStrategy}
-            onChange={this.onChange.bind(this)}
-          >
-            {Object.keys(CollegeStrategy).map(strat => {
-              if (!isNaN(Number(strat)))
-                return (
-                  <ToggleButton
-                    variant="outline-secondary"
-                    size="sm"
-                    value={Number(strat)}
-                    key={strat}
-                    style={{
-                      width:
-                        (100 / Object.keys(CollegeStrategy).length) * 2 + "%"
-                    }}
-                  >
-                    {COLLEGE_TEXT[strat]}{" "}
-                  </ToggleButton>
-                );
-            })}
-          </ToggleButtonGroup>
-        </Form.Row>
-      </FormGroup>
+      <React.Fragment>
+        <FormGroup>
+          {" "}
+          <Form.Label>College education (19-22 years)</Form.Label>
+          <Form.Row className="mx-0">
+            <ToggleButtonGroup
+              style={{ width: "100%" }}
+              name="college"
+              type="radio"
+              value={this.state.collegeStrategy}
+              onChange={this.onChange.bind(this)}
+            >
+              {Object.keys(CollegeStrategy).map(strat => {
+                if (!isNaN(Number(strat)))
+                  return (
+                    <ToggleButton
+                      variant="outline-secondary"
+                      size="sm"
+                      value={Number(strat)}
+                      key={strat}
+                      style={{
+                        width:
+                          (100 / Object.keys(CollegeStrategy).length) * 2 + "%"
+                      }}
+                    >
+                      {COLLEGE_TEXT[strat]}{" "}
+                    </ToggleButton>
+                  );
+              })}
+            </ToggleButtonGroup>
+          </Form.Row>
+        </FormGroup>
+        <FormGroup>
+          <Form.Row>
+            {" "}
+            <Col xs={9}>
+              {" "}
+              <Form.Label>
+                Savings already available for college expenses:
+              </Form.Label>
+            </Col>
+            <Col xs={3}>
+              <NumberFormat
+                thousandSeparator=","
+                prefix="$"
+                className="text-right"
+                value={this.state.collegeSaving.amount}
+                customInput={Form.Control}
+                onValueChange={this.onCollegeSavingChange.bind(this)}
+              />
+            </Col>
+          </Form.Row>{" "}
+        </FormGroup>
+      </React.Fragment>
     );
   }
 }
